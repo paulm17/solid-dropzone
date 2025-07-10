@@ -1,0 +1,30 @@
+to build optipng-bin and jpegtran-bin
+
+brew install autoconf automake libtool libpng optipng
+
+vim ~/.zshrc
+export PATH="$(brew --prefix optipng)/bin:$PATH"
+export PKG_CONFIG_PATH="$(brew --prefix libpng)/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+in folder:
+export CPPFLAGS="-DPNG_ARM_NEON_OPT=0"
+export CXXFLAGS="$CPPFLAGS"
+
+rm -rf node_modules yarn.lock package-lock.json
+yarn
+
+------
+
+to build node-sass
+
+brew install python
+brew install python-setuptools
+
+> open -e ~/.zprofile
+add export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+
+source ~/.zprofile # or restart terminal
+
+export CXXFLAGS="-std=c++17 -stdlib=libc++"
+export LDFLAGS="-stdlib=libc++"
+yarn rebuild node-sass
