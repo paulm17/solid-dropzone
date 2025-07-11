@@ -1,52 +1,38 @@
-// rollup.config.js
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import { babel } from '@rollup/plugin-babel';
+import { terser } from 'rollup-plugin-terser';
+import pkg from './package.json';
 
-// Import necessary plugins
-const { nodeResolve } = require("@rollup/plugin-node-resolve");
-const commonjs = require("@rollup/plugin-commonjs");
-const typescript = require("@rollup/plugin-typescript");
-const { babel } = require("@rollup/plugin-babel");
-const { terser } = require("rollup-plugin-terser");
-const pkg = require("./package.json");
+const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-// Define globals for the UMD build.
-// These are modules that should be available in the global scope for the UMD bundle.
-// Updated for SolidJS.
 const umdGlobals = {
-  "solid-js": "solid",
+  'solid-js': 'solid',
+  'file-selector': 'fileSelector'
 };
 
-// Define the file extensions Rollup will process.
-const extensions = [".js", ".jsx", ".ts", ".tsx"];
-
-module.exports = {
-  input: "./src/index.tsx",
+export default {
+  input: 'src/index.tsx',
   external: Object.keys(umdGlobals),
-
   plugins: [
     nodeResolve({ extensions }),
-    commonjs({ include: "**/node_modules/**" }),
-    typescript({
-      tsconfig: "./tsconfig.json",
-      sourceMap: true,
-      inlineSources: true,
-      declaration: true,
-    }),
+    commonjs({ include: '**/node_modules/**' }),
     babel({
       extensions,
-      exclude: "**/node_modules/**",
-      babelHelpers: "bundled",
-      presets: ["babel-preset-solid", "@babel/preset-typescript"],
+      exclude: '**/node_modules/**',
+      babelHelpers: 'bundled',
+      presets: ['babel-preset-solid', '@babel/preset-typescript'],
     }),
-
     terser(),
   ],
-
-  output: {
-    file: "dist/index.js",
-    format: "umd",
-    name: "solidDropzone", 
-    globals: umdGlobals,
-    sourcemap: "inline",
-    exports: "named",
-  },
+  output: [
+    {
+      file: pkg.main,
+      format: 'umd',
+      name: 'SolidDropzone',
+      globals: umdGlobals,
+      sourcemap: 'inline',
+      exports: 'named',
+    },
+  ],
 };

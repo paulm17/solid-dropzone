@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "rootDir": "src",
     "declaration": true,
-    "declarationDir": "dist/typings",
+    "declarationDir": "dist/types",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "target": "ES2015",
     "lib": ["DOM", "ESNext"],

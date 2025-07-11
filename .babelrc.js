@@ -16,10 +16,6 @@ const plugins = [
   'add-module-exports'
 ]
 
-if (process.env['BABEL_ENV'] === 'es') {
-  plugins.push(['add-import-extension', { extension: 'js' }])
-}
-
 module.exports = {
   presets,
   plugins,
