@@ -24,7 +24,7 @@
     "clean": "rimraf ./dist",
     "build": "yarn clean && yarn build:umd && yarn build:es && yarn build:es-package",
     "build:umd": "cross-env NODE_ENV=es rollup -c",
-    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./dist/es --ignore '**/*.spec.js'",
+    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./dist/es --extensions \".ts,.tsx\" --ignore \"**/*.spec.js\"",
     "build:es-package": "echo '{\"type\":\"module\"}' > dist/es/package.json",
     "start": "styleguidist server",
     "styleguide": "styleguidist build",

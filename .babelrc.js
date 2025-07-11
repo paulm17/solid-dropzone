@@ -1,5 +1,5 @@
 // https://babeljs.io/docs/en/configuration
-const presets = ['babel-preset-solid']
+const presets = ['@babel/preset-typescript', 'babel-preset-solid']
 if (process.env['BABEL_ENV'] === 'es') {
   presets.unshift(['@babel/preset-env', { modules: false }])
 } else {

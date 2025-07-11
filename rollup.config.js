@@ -49,6 +49,7 @@ module.exports = {
       extensions, // Process the same files as other plugins
       exclude: "**/node_modules/**",
       babelHelpers: "bundled", // Bundles Babel helpers
+      presets: ["babel-preset-solid", "@babel/preset-typescript"],
     }),
 
     // 5. Minifies the output bundle for production.
