@@ -2275,6 +2275,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^3.2.4"
     attr-accept: "npm:^2.2.4"
     babel-jest: "npm:^27.4.6"
+    babel-plugin-add-import-extension: "npm:^1.6.0"
     babel-plugin-add-module-exports: "npm:^1.0.4"
     babel-plugin-dynamic-import-node: "npm:^2.3.3"
     babel-preset-solid: "npm:^1.9.6"
@@ -4765,6 +4766,17 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.8.0
   checksum: 10c0/3ec8fdabba150431e430ab98d31ba62a1e0bc0fb2fd8d9236cb7dffda740de99c0b04f24da54ff0b5814dce9f81ff0c35a61add53c0734775996a11a7ba38318
+  languageName: node
+  linkType: hard
+
+"babel-plugin-add-import-extension@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "babel-plugin-add-import-extension@npm:1.6.0"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.14.5"
+  peerDependencies:
+    "@babel/core": ">=7.0.0"
+  checksum: 10c0/0d3e53f114af0c3ffb67b04a41d09e1e5cd27218b007cb094d305b28b693bd32ed56c7be764878f778bab418c64d73059921001d942b9b9c83569b0e2adff15b
   languageName: node
   linkType: hard
 
