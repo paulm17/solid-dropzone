@@ -3,3 +3,5 @@
 ---
 
 Fix types issue
+
+0.0.2
