@@ -4,12 +4,12 @@ const { createConfig, babel, css, devServer } = require("webpack-blocks");
 
 // https://react-styleguidist.js.org/docs/configuration.html
 module.exports = {
-  title: "react-dropzone",
+  title: "solid-dropzone",
   styleguideDir: path.join(__dirname, "styleguide"),
-  template: {
-    favicon:
-      "https://github.com/react-dropzone/react-dropzone/raw/master/logo/logo.png",
-  },
+  // template: {
+  //   favicon:
+  //     "https://github.com/react-dropzone/react-dropzone/raw/master/logo/logo.png",
+  // },
   webpackConfig: createConfig([
     babel(),
     css(),
@@ -23,7 +23,7 @@ module.exports = {
   showSidebar: true,
   serverPort: 8080,
   moduleAliases: {
-    "react-dropzone": path.resolve(__dirname, "./src"),
+    "solid-dropzone": path.resolve(__dirname, "./src"),
   },
   require: [path.join(__dirname, "examples/theme.css")],
   sections: [
@@ -35,7 +35,7 @@ module.exports = {
     // See https://github.com/reactjs/react-docgen/issues/332
     {
       name: "Components",
-      components: "./src/index.js",
+      components: "./src/index.tsx",
     },
     {
       name: "Examples",
