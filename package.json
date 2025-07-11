@@ -4,17 +4,18 @@
   "description": "Simple HTML5 drag-drop zone with SolidJS",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
+  "typings": "dist/typings/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
     ".": {
       "import": {
-        "types": "./typings/solid-dropzone.d.ts",
+        "types": "./dist/typings/index.d.ts",
         "default": "./dist/es/index.js"
       },
       "require": {
-        "types": "./typings/solid-dropzone.d.ts",
+        "types": "./dist/typings/index.d.ts",
         "default": "./dist/index.js"
       }
     }
@@ -177,7 +178,6 @@
     "vite-plugin-solid": "^2.7.0",
     "vitest": "^3.2.4"
   },
-  "typings": "typings/solid-dropzone.d.ts",
   "engines": {
     "node": ">= 10.13"
   },

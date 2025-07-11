@@ -4,9 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
-
     "declaration": true,
-    "declarationDir": "lib",
+    "declarationDir": "dist/typings",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "target": "ES2015",
     "lib": ["DOM", "ESNext"],
@@ -14,7 +13,6 @@
     "moduleResolution": "Node",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "emitDeclarationOnly": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
