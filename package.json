@@ -115,10 +115,6 @@
     "Roland Groza <rolandjitsu@gmail.com>"
   ],
   "license": "MIT",
-  "resolutions": {
-    "optipng-bin": "^9.0.0",
-    "node-sass/node-gyp": "^9.0.0"
-  },
   "dependencies": {
     "attr-accept": "^2.2.4",
     "file-selector": "^2.1.0"
@@ -169,8 +165,6 @@
     "commitizen": "^4.2.4",
     "cross-env": "^7.0.3",
     "husky": "^7.0.4",
-    "imagemin-cli": "^8.0.0",
-    "imagemin-pngquant": "^10.0.0",
     "jest": "^27.4.7",
     "jest-environment-jsdom": "^27.4.7",
     "lint-staged": "^12.3.2",
@@ -187,9 +181,7 @@
     "style-loader": "^3.3.1",
     "typescript": "^5.6.3",
     "vite-plugin-solid": "^2.7.0",
-    "vitest": "^3.2.4",
-    "webpack": "^5.67.0",
-    "webpack-blocks": "^2.1.0"
+    "vitest": "^3.2.4"
   },
   "typings": "typings/solid-dropzone.d.ts",
   "version": "0.0.0-development",
