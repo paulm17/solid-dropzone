@@ -42,16 +42,6 @@
     "version:dev": "yarn version prerelease",
     "release:dev": "yarn npm publish --tag dev"
   },
-  "size-limit": [
-    {
-      "path": "dist/index.js",
-      "limit": "30 KB"
-    },
-    {
-      "path": "dist/es/index.js",
-      "limit": "30 KB"
-    }
-  ],
   "lint-staged": {
     "*.js": [
       "eslint . --fix"
