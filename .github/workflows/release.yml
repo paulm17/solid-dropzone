@@ -42,7 +42,7 @@ jobs:
         if: steps.changesets.outputs.published != 'true'
         run: |
           git checkout main
-          yarn version
+          yarn run version
           yarn release
 
           # Get the new version from package.json
