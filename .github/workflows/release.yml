@@ -37,19 +37,3 @@ jobs:
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create @dev release
-        if: steps.changesets.outputs.published != 'true'
-        run: |
-          git checkout main
-          yarn version:dev
-          yarn release:dev
-
-          # Get the new version from package.json
-          NEW_VERSION=$(node -p "require('./package.json').version")
-
-          # Create a corresponding pre-release on GitHub
-          gh release create "v$NEW_VERSION" --prerelease --notes "Development pre-release."
-        env:
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

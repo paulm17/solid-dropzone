@@ -1,6 +1,6 @@
 {
   "name": "@empoleon/solid-dropzone",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Simple HTML5 drag-drop zone with SolidJS",
   "main": "dist/index.js",
   "module": "./dist/index.js",
@@ -39,6 +39,7 @@
     "storybook": "storybook dev -p 6006",
     "newchangeset": "yarn exec changeset",
     "version": "yarn changeset version",
+    "release": "yarn changeset publish",
     "version:dev": "yarn version prerelease",
     "release:dev": "yarn npm publish --tag dev"
   },
