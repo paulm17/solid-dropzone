@@ -1,6 +1,6 @@
 {
   "name": "@empoleon/solid-dropzone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple HTML5 drag-drop zone with SolidJS",
   "main": "dist/index.js",
   "module": "./dist/index.js",
