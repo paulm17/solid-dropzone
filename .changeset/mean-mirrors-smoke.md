@@ -3,3 +3,5 @@
 ---
 
 finally fix type issues
+
+0.0.6
