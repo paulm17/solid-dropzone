@@ -1,4 +1,4 @@
-import { FileError, FileRejection, AcceptProp } from '../types'; // Adjust import path as needed
+import { FileError, FileRejection, Accept } from '../types'; // Adjust import path as needed
 
 export const ErrorCode = {
   FileInvalidType: 'file-invalid-type',
@@ -127,7 +127,7 @@ export function allFilesAccepted({
   });
 }
 
-export function acceptPropAsAcceptAttr(accept?: AcceptProp): string | undefined {
+export function acceptPropAsAcceptAttr(accept?: Accept): string | undefined {
   if (accept === undefined) {
     return undefined;
   }
@@ -143,7 +143,7 @@ export interface PickerOption {
   };
 }
 
-export function pickerOptionsFromAccept(accept?: AcceptProp): PickerOption[] | undefined {
+export function pickerOptionsFromAccept(accept?: Accept): PickerOption[] | undefined {
   if (accept === undefined) {
     return undefined;
   }

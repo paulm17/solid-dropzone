@@ -8,7 +8,6 @@ import {
   ParentComponent,
   Component,
 } from "solid-js";
-import { fromEvent } from "file-selector";
 import {
   acceptPropAsAcceptAttr,
   allFilesAccepted,
@@ -25,7 +24,7 @@ import {
   pickerOptionsFromAccept,
   TOO_MANY_FILES_REJECTION,
 } from "./utils";
-import { DropzoneHookResult, DropzoneInputProps, DropzoneProps, DropzoneRootProps, FileError, FileRejection } from "./types";
+import { DropzoneHookResult, DropzoneInputProps, DropzoneProps, DropzoneRootProps, FileError, FileRejection, FileWithPath, fromEvent, GenericEventHandler } from "./types";
 
 const defaultProps = {
   disabled: false,
@@ -276,17 +275,17 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
     }
   };
 
-  const setFiles = (files: File[], event: DragEvent | Event | null) => {
+  const setFiles = (files: FileWithPath[], event: DragEvent | Event | null) => {
     const newAcceptedFiles: File[] = [];
     const newFileRejections: FileRejection[] = [];
 
     files.forEach((file) => {
-      const [accepted, acceptError] = fileAccepted(file, acceptAttr());
-      const [sizeMatch, sizeError] = fileMatchSize(file, local.minSize, local.maxSize);
-      const customErrors = local.validator ? local.validator(file) : null;
+      const [accepted, acceptError] = fileAccepted(file as File, acceptAttr());
+      const [sizeMatch, sizeError] = fileMatchSize(file as File, local.minSize, local.maxSize);
+      const customErrors = local.validator ? local.validator(file as File) : null;
 
       if (accepted && sizeMatch && !customErrors) {
-        newAcceptedFiles.push(file);
+        newAcceptedFiles.push(file as File);
       } else {
         let errors = [acceptError, sizeError].filter((e): e is FileError => e !== null);
 
@@ -294,7 +293,7 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
           errors = errors.concat(Array.isArray(customErrors) ? customErrors : [customErrors]);
         }
 
-        newFileRejections.push({ file, errors });
+        newFileRejections.push({ file: file as File, errors });
       }
     });
 
@@ -338,7 +337,7 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
           if (isPropagationStopped(event) && !local.noDragEventsBubbling) {
             return;
           }
-          setFiles(files as File[], event);
+          setFiles(files as FileWithPath[], event);
         })
         .catch((e) => onErrCb(e));
     }
@@ -365,7 +364,7 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
       (window as any)
         .showOpenFilePicker(opts)
         .then((handles: FileSystemFileHandle[]) => local.getFilesFromEvent(handles))
-        .then((files: File[]) => {
+        .then((files: FileWithPath[]) => {
           setFiles(files, null);
           setIsFileDialogActive(false);
         })
@@ -526,22 +525,22 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
       multiple: local.multiple,
       type: "file" as const,
       style: {
-        border: 0,
+        border: "0px",
         clip: "rect(0, 0, 0, 0)",
         "clip-path": "inset(50%)",
         height: "1px",
-        margin: "0 -1px -1px 0",
+        margin: "0px -1px -1px 0px",
         overflow: "hidden",
-        padding: 0,
+        padding: "0px",
         position: "absolute" as const,
         width: "1px",
         "white-space": "nowrap" as const,
       },
       onChange: composeHandler(
-        composeEventHandlers(localProps.onChange, onDropCb)
+        composeEventHandlers(localProps.onChange as GenericEventHandler, onDropCb)
       ),
       onClick: composeHandler(
-        composeEventHandlers(localProps.onClick, onInputElementClick)
+        composeEventHandlers(localProps.onClick as GenericEventHandler, onInputElementClick)
       ),
       tabIndex: -1,
       [refKey]: (el: HTMLInputElement) => { inputRef = el; },
@@ -585,3 +584,4 @@ export function useDropzone(props: DropzoneProps = {}): DropzoneHookResult {
 function noop(): void {}
 
 export { ErrorCode } from "./utils";
+export * from './types';

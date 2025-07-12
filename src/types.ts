@@ -1,9 +1,16 @@
 import { Accessor } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
+export enum ErrorCode {
+  FileInvalidType = "file-invalid-type",
+  FileTooLarge = "file-too-large",
+  FileTooSmall = "file-too-small",
+  TooManyFiles = "too-many-files",
+}
+
 export interface FileError {
-  code: string;
   message: string;
+  code: ErrorCode | string;
 }
 
 export interface FileRejection {
@@ -11,13 +18,11 @@ export interface FileRejection {
   errors: FileError[];
 }
 
-export interface AcceptProp {
+export interface Accept {
   [key: string]: string[];
 }
 
-export interface DropEvent extends DragEvent {
-  dataTransfer: DataTransfer;
-}
+export type DropEvent = Event | Array<FileSystemFileHandle> | DataTransfer;
 
 export interface DropzoneRef {
   open: () => void;
@@ -37,19 +42,17 @@ export interface DropzoneRootProps {
   [key: string]: any;
 }
 
-export interface DropzoneInputProps {
+export interface DropzoneInputProps
+  extends JSX.InputHTMLAttributes<HTMLInputElement> {
   refKey?: string;
-  onChange?: (event: Event) => void;
-  onClick?: (event: MouseEvent) => void;
-  [key: string]: any;
 }
 
 export interface DropzoneState {
   isFocused: () => boolean;
   isFileDialogActive: boolean;
   isDragActive: () => boolean;
-  isDragAccept: () => boolean;
-  isDragReject: () => boolean;
+  isDragAccept: Accessor<boolean>;
+  isDragReject: Accessor<boolean>;
   acceptedFiles: Accessor<File[]>;
   fileRejections: Accessor<FileRejection[]>;
 }
@@ -66,7 +69,7 @@ export type DropzoneHookResult = DropzoneState & DropzoneMethods;
 
 export interface DropzoneProps {
   ref?: Partial<DropzoneRef>; 
-  accept?: AcceptProp;
+  accept?: Accept;
   multiple?: boolean;
   preventDropOnDocument?: boolean;
   noClick?: boolean;
@@ -77,7 +80,7 @@ export interface DropzoneProps {
   maxSize?: number;
   maxFiles?: number;
   disabled?: boolean;
-  getFilesFromEvent?: (event: DragEvent | Event | FileSystemFileHandle[]) => File[] | Promise<File[]>;
+  getFilesFromEvent?: (event: DropEvent) => Promise<FileWithPath[]>;
   onFileDialogCancel?: () => void;
   onFileDialogOpen?: () => void;
   useFsAccessApi?: boolean;
@@ -85,12 +88,66 @@ export interface DropzoneProps {
   onDragEnter?: (event: DragEvent) => void;
   onDragLeave?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
-  onDrop?: (acceptedFiles: File[], fileRejections: FileRejection[], event: DragEvent | Event) => void;
-  onDropAccepted?: (files: File[], event: DragEvent | Event) => void;
-  onDropRejected?: (fileRejections: FileRejection[], event: DragEvent | Event) => void;
+  onDrop?: <T extends FileWithPath>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent | null) => void;
+  onDropAccepted?: <T extends FileWithPath>(files: T[], event: DropEvent | null) => void;
+  onDropRejected?: (fileRejections: FileRejection[], event: DropEvent | null) => void;
   onError?: (error: Error) => void;
   validator?: (file: File) => FileError | FileError[] | null;
   children?: 
     | JSX.Element           // allow normal JSX children
     | ((state: DropzoneHookResult) => JSX.Element);
+}
+
+export type GenericEventHandler = (event: any, ...args: any[]) => void;
+
+export interface FileWithPath extends File {
+  path?: string;
+}
+
+export async function fromEvent(eventOrHandles: Event | FileSystemFileHandle[]): Promise<FileWithPath[]> {
+  const files: FileWithPath[] = [];
+  
+  // Handle FileSystemFileHandle[] (from File System Access API)
+  if (Array.isArray(eventOrHandles)) {
+    for (const handle of eventOrHandles) {
+      const file = await handle.getFile();
+      files.push(Object.assign(file, { path: handle.name }));
+    }
+    return files;
+  }
+  
+  const event = eventOrHandles;
+  
+  if (event.type === 'drop') {
+    const dropEvent = event as DragEvent;
+    if (dropEvent.dataTransfer?.items) {
+      // Handle DataTransferItemList
+      for (let i = 0; i < dropEvent.dataTransfer.items.length; i++) {
+        const item = dropEvent.dataTransfer.items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file) {
+            files.push(Object.assign(file, { path: file.name }));
+          }
+        }
+      }
+    } else if (dropEvent.dataTransfer?.files) {
+      // Handle FileList
+      for (let i = 0; i < dropEvent.dataTransfer.files.length; i++) {
+        const file = dropEvent.dataTransfer.files[i];
+        files.push(Object.assign(file, { path: file.name }));
+      }
+    }
+  } else if (event.type === 'change') {
+    const inputEvent = event as Event;
+    const target = inputEvent.target as HTMLInputElement;
+    if (target?.files) {
+      for (let i = 0; i < target.files.length; i++) {
+        const file = target.files[i];
+        files.push(Object.assign(file, { path: file.name }));
+      }
+    }
+  }
+  
+  return files;
 }

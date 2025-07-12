@@ -8,6 +8,10 @@ export default {
 const maxLength = 20;
 
 function nameLengthValidator(file: File) {
+  if (!file || !file.name) {
+    return null;
+  }
+
   if (file.name.length > maxLength) {
     return {
       code: "name-too-large",

@@ -1,11 +1,10 @@
 {
   "include": ["./src"],
-  "exclude": ["./dist"],
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
     "declaration": true,
-    "declarationDir": "dist/types",
+    "declarationDir": "./dist/types",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "target": "ES2015",
     "lib": ["DOM", "ESNext"],
@@ -17,7 +16,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
-    "composite": true,
     "paths": {
       "solid-dropzone": ["src/index.tsx"],
       "solid-dropzone/*": ["src/*"]

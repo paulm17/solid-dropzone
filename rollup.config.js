@@ -1,38 +1,41 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import { babel } from '@rollup/plugin-babel';
+import babel from '@rollup/plugin-babel';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import pkg from './package.json';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
-const umdGlobals = {
-  'solid-js': 'solid',
-  'file-selector': 'fileSelector'
-};
+const external = [
+  'solid-js',
+  'solid-js/jsx-runtime',
+  'file-selector'
+];
+
 
 export default {
   input: 'src/index.tsx',
-  external: Object.keys(umdGlobals),
-  plugins: [
-    nodeResolve({ extensions }),
-    commonjs({ include: '**/node_modules/**' }),
-    babel({
-      extensions,
-      exclude: '**/node_modules/**',
-      babelHelpers: 'bundled',
-      presets: ['babel-preset-solid', '@babel/preset-typescript'],
-    }),
-    terser(),
-  ],
+
   output: [
     {
-      file: pkg.main,
-      format: 'umd',
-      name: 'SolidDropzone',
-      globals: umdGlobals,
-      sourcemap: 'inline',
-      exports: 'named',
-    },
+      format: 'es',
+      sourcemap: true,
+      preserveModules: true, 
+      dir: 'dist'
+    }
+  ],
+
+  external: (id) => external.some(dep => id.startsWith(dep)),
+
+  plugins: [
+    nodeResolve({
+      extensions,
+    }),
+
+    babel({
+      babelHelpers: 'bundled',
+      include: ['src/**/*'],
+      extensions,
+    }),
+
+    terser(),
   ],
 };

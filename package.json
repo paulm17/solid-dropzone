@@ -1,34 +1,26 @@
 {
   "name": "@empoleon/solid-dropzone",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Simple HTML5 drag-drop zone with SolidJS",
   "main": "dist/index.js",
-  "module": "dist/es/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/es/index.js"
-      },
-      "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "sideEffects": false,
   "scripts": {
     "cz": "git-cz",
     "clean": "rimraf ./dist",
-    "build": "yarn clean && yarn build:types && yarn build:umd && yarn build:es && yarn build:es-package",
-    "build:types": "tsc --emitDeclarationOnly",
-    "build:umd": "cross-env NODE_ENV=es rollup -c",
-    "build:es": "cross-env BABEL_ENV=es babel ./src --out-dir ./dist/es --extensions \".ts,.tsx\" --ignore \"**/*.spec.js\"",
-    "build:es-package": "echo '{\"type\":\"module\"}' > dist/es/package.json",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build:js": "rollup -c --no-sourcemap",
+    "build": "yarn clean && yarn build:types && yarn build:js",
     "start": "styleguidist server",
     "styleguide": "styleguidist build",
     "test": "cross-env NODE_ENV=test yarn lint && jest --coverage && yarn typescript",
@@ -46,6 +38,7 @@
     "typescript": "tsc --project ./typings/tests",
     "storybook": "storybook dev -p 6006",
     "newchangeset": "yarn exec changeset",
+    "version": "yarn changeset version",
     "version:dev": "yarn version prerelease",
     "release:dev": "yarn npm publish --tag dev"
   },
@@ -110,9 +103,11 @@
   "author": "Param Aggarwal",
   "forkBy": "Paul M",
   "license": "MIT",
+  "resolutions": {
+    "file-selector": "0.4.0"
+  },
   "dependencies": {
-    "attr-accept": "^2.2.4",
-    "file-selector": "^2.1.0"
+    "attr-accept": "^2.2.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
@@ -187,12 +182,5 @@
     "defaults"
   ],
   "browser": {},
-  "typesVersions": {
-    "*": {
-      ".": [
-        "./dist/types/index.d.ts"
-      ]
-    }
-  },
   "packageManager": "yarn@4.9.1"
 }
