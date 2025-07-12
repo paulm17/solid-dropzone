@@ -4,4 +4,4 @@
 
 finally fix type issues
 
-0.0.6a
+0.0.6b
